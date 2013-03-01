@@ -63,7 +63,7 @@ public class mcMMO extends JavaPlugin {
     private final BlockListener     blockListener     = new BlockListener(this);
     private final EntityListener    entityListener    = new EntityListener(this);
     private final InventoryListener inventoryListener = new InventoryListener(this);
-    private final WorldListener     worldListener     = new WorldListener();
+    private final WorldListener     worldListener     = new WorldListener(this);
 
     private HashMap<Integer, String>    tntTracker     = new HashMap<Integer, String>();
     private HashMap<BlockState, String> furnaceTracker = new HashMap<BlockState, String>();
