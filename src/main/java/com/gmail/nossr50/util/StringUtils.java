@@ -36,24 +36,6 @@ public class StringUtils {
         return createPrettyEnumString(entity.toString());
     }
 
-    private static String createPrettyEnumString(String baseString) {
-        String[] substrings = baseString.split("_");
-        String prettyString = "";
-        int size = 1;
-
-        for (String string : substrings) {
-            prettyString = prettyString.concat(getCapitalized(string));
-
-            if (size < substrings.length) {
-                prettyString = prettyString.concat(" ");
-            }
-
-            size++;
-        }
-
-        return prettyString;
-    }
-
     /**
      * Gets the int represented by this string.
      *
@@ -132,4 +114,21 @@ public class StringUtils {
         }
     }
 
+    private static String createPrettyEnumString(String baseString) {
+        String[] substrings = baseString.split("_");
+        String prettyString = "";
+        int size = 1;
+
+        for (String string : substrings) {
+            prettyString = prettyString.concat(getCapitalized(string));
+
+            if (size < substrings.length) {
+                prettyString = prettyString.concat(" ");
+            }
+
+            size++;
+        }
+
+        return prettyString;
+    }
 }

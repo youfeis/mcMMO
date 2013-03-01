@@ -45,75 +45,6 @@ public class SpoutUtils {
     public static Keyboard menuKey;
 
     /**
-     * Write file to disk.
-     *
-     * @param theFileName The name of the file
-     * @param theFilePath The name of the file path
-     */
-    private static void writeFile(String theFileName, String theFilePath) {
-        InputStream is = null;
-        OutputStream os = null;
-        JarFile jar = null;
-
-        try {
-            File currentFile = new File(theFilePath + theFileName);
-
-            // No point in writing the file again if it already exists.
-            if (currentFile.exists()) {
-                return;
-            }
-
-            jar = new JarFile(mcMMO.mcmmo);
-            JarEntry entry = jar.getJarEntry("resources/" + theFileName);
-            is = jar.getInputStream(entry);
-
-            byte[] buf = new byte[2048];
-            int nbRead;
-
-            os = new BufferedOutputStream(new FileOutputStream(currentFile));
-
-            while ((nbRead = is.read(buf)) != -1) {
-                os.write(buf, 0, nbRead);
-            }
-
-            os.flush();
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (is != null) {
-                try {
-                    is.close();
-                }
-                catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if (os != null) {
-                try {
-                    os.close();
-                }
-                catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
-            if (jar != null) {
-                try {
-                    jar.close();
-                }
-                catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
      * Extract Spout files to the Resources directory.
      */
     public static void extractFiles() {
@@ -537,30 +468,6 @@ public class SpoutUtils {
     }
 
     /**
-     * Gets the notification tier of a skill.
-     *
-     * @param level The level of the skill
-     * @return the notification tier of the skill
-     */
-    private static int getNotificationTier(int level) {
-        if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier4()) {
-            return 5;
-        }
-        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier3()) {
-            return 4;
-        }
-        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier2()) {
-            return 3;
-        }
-        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier1()) {
-            return 2;
-        }
-        else {
-            return 1;
-        }
-    }
-
-    /**
      * Re-enable SpoutCraft for players after a /reload
      */
     public static void reloadSpoutPlayers() {
@@ -582,5 +489,98 @@ public class SpoutUtils {
 
         FileManager FM = SpoutManager.getFileManager();
         FM.addToPreLoginCache(plugin, getFiles());
+    }
+
+    /**
+     * Write file to disk.
+     *
+     * @param theFileName The name of the file
+     * @param theFilePath The name of the file path
+     */
+    private static void writeFile(String theFileName, String theFilePath) {
+        InputStream is = null;
+        OutputStream os = null;
+        JarFile jar = null;
+
+        try {
+            File currentFile = new File(theFilePath + theFileName);
+
+            // No point in writing the file again if it already exists.
+            if (currentFile.exists()) {
+                return;
+            }
+
+            jar = new JarFile(mcMMO.mcmmo);
+            JarEntry entry = jar.getJarEntry("resources/" + theFileName);
+            is = jar.getInputStream(entry);
+
+            byte[] buf = new byte[2048];
+            int nbRead;
+
+            os = new BufferedOutputStream(new FileOutputStream(currentFile));
+
+            while ((nbRead = is.read(buf)) != -1) {
+                os.write(buf, 0, nbRead);
+            }
+
+            os.flush();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (is != null) {
+                try {
+                    is.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (os != null) {
+                try {
+                    os.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (jar != null) {
+                try {
+                    jar.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets the notification tier of a skill.
+     *
+     * @param level The level of the skill
+     * @return the notification tier of the skill
+     */
+    private static int getNotificationTier(int level) {
+        if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier4()) {
+            return 5;
+        }
+        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier3()) {
+            return 4;
+        }
+        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier2()) {
+            return 3;
+        }
+        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier1()) {
+            return 2;
+        }
+        else {
+            return 1;
+        }
     }
 }

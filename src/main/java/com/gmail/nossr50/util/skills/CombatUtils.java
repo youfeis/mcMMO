@@ -271,46 +271,6 @@ public final class CombatUtils {
     }
 
     /**
-     * Process archery abilities.
-     *
-     * @param shooter The player shooting
-     * @param target The defending entity
-     * @param event The event to run the archery checks on.
-     */
-    private static void archeryCheck(Player shooter, LivingEntity target, EntityDamageByEntityEvent event) {
-        if (Misc.isNPCEntity(shooter)) {
-            return;
-        }
-
-        if (Permissions.skillEnabled(shooter, SkillType.ARCHERY)) {
-            String playerName = shooter.getName();
-
-            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canSkillShot()) {
-                event.setDamage(SkillManagerStore.getInstance().getArcheryManager(playerName).skillShotCheck(event.getDamage()));
-            }
-
-            if (target instanceof Player && SkillType.UNARMED.getPVPEnabled() && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect((Player) target)) {
-                event.setCancelled(SkillManagerStore.getInstance().getUnarmedManager(((Player) target).getName()).deflectCheck());
-
-                if (event.isCancelled()) {
-                    return;
-                }
-            }
-
-            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canDaze(target)) {
-                event.setDamage(SkillManagerStore.getInstance().getArcheryManager(playerName).dazeCheck((Player) target, event.getDamage()));
-            }
-
-            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canTrackArrows()) {
-                SkillManagerStore.getInstance().getArcheryManager(playerName).trackArrows(target);
-            }
-
-            SkillManagerStore.getInstance().getArcheryManager(playerName).distanceXpBonus(target);
-            startGainXp(UserManager.getPlayer(shooter), target, SkillType.ARCHERY);
-        }
-    }
-
-    /**
      * Attempt to damage target for value dmg with reason CUSTOM
      *
      * @param target LivingEntity which to attempt to damage
@@ -318,52 +278,6 @@ public final class CombatUtils {
      */
     public static void dealDamage(LivingEntity target, int dmg) {
         dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
-    }
-
-    /**
-     * Attempt to damage target for value dmg with reason cause
-     *
-     * @param target LivingEntity which to attempt to damage
-     * @param dmg Amount of damage to attempt to do
-     * @param cause DamageCause to pass to damage event
-     */
-    private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-        if (Config.getInstance().getEventCallbackEnabled()) {
-            EntityDamageEvent ede = new FakeEntityDamageEvent(target, cause, dmg);
-            mcMMO.p.getServer().getPluginManager().callEvent(ede);
-
-            if (ede.isCancelled()) {
-                return;
-            }
-
-            target.damage(ede.getDamage());
-        }
-        else {
-            target.damage(dmg);
-        }
-    }
-
-    /**
-     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
-     *
-     * @param target LivingEntity which to attempt to damage
-     * @param dmg Amount of damage to attempt to do
-     * @param attacker Player to pass to event as damager
-     */
-    private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
-        if (Config.getInstance().getEventCallbackEnabled()) {
-            EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
-            mcMMO.p.getServer().getPluginManager().callEvent(ede);
-
-            if (ede.isCancelled()) {
-                return;
-            }
-
-            target.damage(ede.getDamage());
-        }
-        else {
-            target.damage(dmg);
-        }
     }
 
     /**
@@ -596,5 +510,91 @@ public final class CombatUtils {
         }
 
         return false;
+    }
+
+    /**
+     * Process archery abilities.
+     *
+     * @param shooter The player shooting
+     * @param target The defending entity
+     * @param event The event to run the archery checks on.
+     */
+    private static void archeryCheck(Player shooter, LivingEntity target, EntityDamageByEntityEvent event) {
+        if (Misc.isNPCEntity(shooter)) {
+            return;
+        }
+
+        if (Permissions.skillEnabled(shooter, SkillType.ARCHERY)) {
+            String playerName = shooter.getName();
+
+            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canSkillShot()) {
+                event.setDamage(SkillManagerStore.getInstance().getArcheryManager(playerName).skillShotCheck(event.getDamage()));
+            }
+
+            if (target instanceof Player && SkillType.UNARMED.getPVPEnabled() && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect((Player) target)) {
+                event.setCancelled(SkillManagerStore.getInstance().getUnarmedManager(((Player) target).getName()).deflectCheck());
+
+                if (event.isCancelled()) {
+                    return;
+                }
+            }
+
+            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canDaze(target)) {
+                event.setDamage(SkillManagerStore.getInstance().getArcheryManager(playerName).dazeCheck((Player) target, event.getDamage()));
+            }
+
+            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canTrackArrows()) {
+                SkillManagerStore.getInstance().getArcheryManager(playerName).trackArrows(target);
+            }
+
+            SkillManagerStore.getInstance().getArcheryManager(playerName).distanceXpBonus(target);
+            startGainXp(UserManager.getPlayer(shooter), target, SkillType.ARCHERY);
+        }
+    }
+
+    /**
+     * Attempt to damage target for value dmg with reason cause
+     *
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param cause DamageCause to pass to damage event
+     */
+    private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
+        if (Config.getInstance().getEventCallbackEnabled()) {
+            EntityDamageEvent ede = new FakeEntityDamageEvent(target, cause, dmg);
+            mcMMO.p.getServer().getPluginManager().callEvent(ede);
+
+            if (ede.isCancelled()) {
+                return;
+            }
+
+            target.damage(ede.getDamage());
+        }
+        else {
+            target.damage(dmg);
+        }
+    }
+
+    /**
+     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+     *
+     * @param target LivingEntity which to attempt to damage
+     * @param dmg Amount of damage to attempt to do
+     * @param attacker Player to pass to event as damager
+     */
+    private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
+        if (Config.getInstance().getEventCallbackEnabled()) {
+            EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
+            mcMMO.p.getServer().getPluginManager().callEvent(ede);
+
+            if (ede.isCancelled()) {
+                return;
+            }
+
+            target.damage(ede.getDamage());
+        }
+        else {
+            target.damage(dmg);
+        }
     }
 }

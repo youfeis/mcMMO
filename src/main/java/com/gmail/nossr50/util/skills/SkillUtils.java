@@ -295,16 +295,6 @@ public class SkillUtils {
         return false;
     }
 
-    private static boolean isLocalizedSkill(String skillName) {
-        for (SkillType skill : SkillType.values()) {
-            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static String getSkillName(SkillType skill) {
         if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
             return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"));
@@ -624,5 +614,15 @@ public class SkillUtils {
 
     public static boolean treasureDropSuccessful(double dropChance, int activationChance) {
         return dropChance > Misc.getRandom().nextDouble() * activationChance;
+    }
+
+    private static boolean isLocalizedSkill(String skillName) {
+        for (SkillType skill : SkillType.values()) {
+            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
