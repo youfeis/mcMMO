@@ -39,6 +39,7 @@ import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ChimaeraWing;
@@ -290,7 +291,7 @@ public class PlayerListener implements Listener {
                     player.updateInventory();
                 }
                 /* SALVAGE CHECKS */
-                else if (blockID == Repair.salvageAnvilId && Permissions.salvage(player) && Repair.isSalvageable(heldItem)) {
+                else if (blockID == Salvage.salvageAnvilId && Permissions.salvage(player) && Repair.isSalvageable(heldItem)) {
                     UserManager.getPlayer(player).getRepairManager().handleSalvage(block.getLocation(), heldItem);
                     event.setCancelled(true);
                     player.updateInventory();

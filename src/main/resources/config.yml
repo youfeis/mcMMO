@@ -164,7 +164,10 @@ Skills:
         Level_Cap: 0
         Anvil_Messages: true
         Anvil_ID: 42
-        Salvage_Anvil_ID: 41
+    Salvage:
+        Level_Cap: 0
+        Anvil_Messages: true
+        Anvil_ID: 41
         Salvage_tools: true
         Salvage_armor: true
     Smelting:

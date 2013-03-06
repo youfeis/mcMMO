@@ -7,6 +7,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.ItemUtils;
 
 public class Repair {
@@ -18,8 +19,7 @@ public class Repair {
 
     public static int salvageUnlockLevel = AdvancedConfig.getInstance().getSalvageUnlockLevel();
 
-    public static int     salvageAnvilId       = Config.getInstance().getSalvageAnvilId();
-    public static int     repairAnvilId        = Config.getInstance().getRepairAnvilId();
+    public static int repairAnvilId = Config.getInstance().getRepairAnvilId();
     public static boolean anvilMessagesEnabled = Config.getInstance().getRepairAnvilMessagesEnabled();
 
     /**
@@ -104,7 +104,7 @@ public class Repair {
             return new String[] {LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2")};
         }
 
-        if (blockId == salvageAnvilId) {
+        if (blockId == Salvage.salvageAnvilId) {
             return new String[] {"[mcMMO] Anvil Placed", "Right click to salvage!"};
         }
 
@@ -116,7 +116,7 @@ public class Repair {
             return LocaleLoader.getString("Repair.Listener.Anvil");
         }
 
-        if (blockId == salvageAnvilId) {
+        if (blockId == Salvage.salvageAnvilId) {
             return LocaleLoader.getString("Repair.Listener.Anvil2");
         }
 

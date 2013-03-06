@@ -31,6 +31,7 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
+import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -351,7 +352,7 @@ public class McMMOPlayer {
             return placedRepairAnvil;
         }
 
-        if (anvilId == Repair.salvageAnvilId) {
+        if (anvilId == Salvage.salvageAnvilId) {
             return placedSalvageAnvil;
         }
 
@@ -363,7 +364,7 @@ public class McMMOPlayer {
             placedRepairAnvil = !placedRepairAnvil;
         }
 
-        if (anvilId == Repair.salvageAnvilId) {
+        if (anvilId == Salvage.salvageAnvilId) {
             placedSalvageAnvil = !placedSalvageAnvil;
         }
     }

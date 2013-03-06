@@ -187,9 +187,12 @@ public class Config extends AutoUpdateConfigLoader {
     /* Repair */
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
     public int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
-    public int getSalvageAnvilId() { return config.getInt("Skills.Repair.Salvage_Anvil_ID", 41); }
-    public boolean getSalvageTools() { return config.getBoolean("Skills.Repair.Salvage_tools", true); }
-    public boolean getSalvageArmor() { return config.getBoolean("Skills.Repair.Salvage_armor", true); }
+
+    /* Salvage */
+    public boolean getSalvageAnvilMessagesEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Messages", true); }
+    public int getSalvageAnvilId() { return config.getInt("Skills.Salvage.Anvil_ID", 41); }
+    public boolean getSalvageTools() { return config.getBoolean("Skills.Salvage.Salvage_tools", true); }
+    public boolean getSalvageArmor() { return config.getBoolean("Skills.Salvage.Salvage_armor", true); }
 
     /* Unarmed */
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() { return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true); }

@@ -5,8 +5,9 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.SkillManager;
 
 public class SalvageManager extends SkillManager {
-
     public SalvageManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.SALVAGE);
     }
+
+    
 }
