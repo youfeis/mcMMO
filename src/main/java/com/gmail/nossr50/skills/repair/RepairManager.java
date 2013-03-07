@@ -3,8 +3,6 @@ package com.gmail.nossr50.skills.repair;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -170,32 +168,6 @@ public class RepairManager extends SkillManager {
 
         // Repair the item!
         item.setDurability(newDurability);
-    }
-
-    public void handleSalvage(Location location, ItemStack item) {
-        Player player = getPlayer();
-
-        if (player.getGameMode() != GameMode.SURVIVAL) {
-            return;
-        }
-
-        if (getSkillLevel() < Repair.salvageUnlockLevel) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
-            return;
-        }
-
-        if (item.getDurability() == 0) {
-            player.setItemInHand(new ItemStack(Material.AIR));
-            location.setY(location.getY() + 1);
-
-            Misc.dropItems(location, new ItemStack(Repair.getSalvagedItem(item)), Repair.getSalvagedAmount(item) * item.getAmount());
-
-            player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
-        }
-        else {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
-        }
     }
 
     /**
