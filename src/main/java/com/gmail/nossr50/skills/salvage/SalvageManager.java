@@ -43,7 +43,7 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        salvageableAmount *= Math.max((int) (salvageableAmount * salvagePercentage), 1);
+        salvageableAmount = Math.max((int) (salvageableAmount * salvagePercentage), 1);
 
         player.setItemInHand(new ItemStack(Material.AIR));
         location.add(0, 1, 0);
@@ -78,18 +78,14 @@ public class SalvageManager extends SkillManager {
         boolean downgraded = false;
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
-            Enchantment enchantment = enchant.getKey();
+            int successChance = Misc.getRandom().nextInt(activationChance);
 
-            if (100 > Misc.getRandom().nextInt(activationChance)) {
-                int enchantLevel = enchant.getValue();
-
-                if (Salvage.arcaneSalvageDowngrades && enchantLevel > 1 && 50 > Misc.getRandom().nextInt(activationChance)) {
-                    enchantMeta.addStoredEnchant(enchantment, enchantLevel - 1, true);
-                    downgraded = true;
-                }
-                else {
-                    enchantMeta.addStoredEnchant(enchantment, enchantLevel, true);
-                }
+            if (Salvage.extractFullEnchantChance1 > successChance) {
+                enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
+            }
+            else if (Salvage.extractPartialEnchantChance1 > successChance) {
+                enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue() - 1, true);
+                downgraded = true;
             }
             else {
                 downgraded = true;

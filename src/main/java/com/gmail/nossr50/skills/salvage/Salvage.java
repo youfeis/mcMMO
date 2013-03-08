@@ -14,17 +14,17 @@ public class Salvage {
 
     public static int advancedSalvageUnlockLevel = 350;
 
-    public static double extractEnchantChance1 = 10.0D;
-    public static double extractEnchantChance2 = 20.0D;
-    public static double extractEnchantChance3 = 30.0D;
-    public static double extractEnchantChance4 = 40.0D;
-    public static double extractEnchantChance5 = 50.0D;
+    public static double extractFullEnchantChance1 = 2.5D;
+    public static double extractFullEnchantChance2 = 10.0D;
+    public static double extractFullEnchantChance3 = 17.5D;
+    public static double extractFullEnchantChance4 = 25.0D;
+    public static double extractFullEnchantChance5 = 32.5D;
 
-    public static double extractPartialEnchantChance1 = 75.0D;
-    public static double extractPartialEnchantChance2 = 60.0D;
-    public static double extractPartialEnchantChance3 = 45.0D;
-    public static double extractPartialEnchantChance4 = 30.0D;
-    public static double extractPartialEnchantChance5 = 15.0D;
+    public static double extractPartialEnchantChance1 = 7.5D;
+    public static double extractPartialEnchantChance2 = 10.0D;
+    public static double extractPartialEnchantChance3 = 12.5D;
+    public static double extractPartialEnchantChance4 = 15.0D;
+    public static double extractPartialEnchantChance5 = 17.5D;
 
     public static int arcaneSalvageRank1 = 200;
     public static int arcaneSalvageRank2 = 400;
