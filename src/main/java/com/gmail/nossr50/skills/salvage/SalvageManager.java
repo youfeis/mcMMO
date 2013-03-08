@@ -36,12 +36,14 @@ public class SalvageManager extends SkillManager {
         }
 
         double salvagePercentage = Math.min((((Salvage.salvageMaxBonus / Salvage.salvageMaxBonusLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxBonus / 100.0D);
-        int salvageAmount = Salvage.calculateSalvageAmount(item.getDurability(), item.getType().getMaxDurability(), salvagePercentage, Salvage.getSalvagedAmount(item));
+        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), item.getType().getMaxDurability(), Salvage.getSalvagedAmount(item));
 
-        if (salvageAmount == 0) {
+        if (salvageableAmount == 0) {
             player.sendMessage("This item is too damaged to be salvaged."); // TODO: Localize
             return;
         }
+
+        salvageableAmount *= Math.max((int) (salvageableAmount * salvagePercentage), 1);
 
         player.setItemInHand(new ItemStack(Material.AIR));
         location.add(0, 1, 0);
@@ -56,7 +58,7 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        Misc.dropItems(location, new ItemStack(Salvage.getSalvagedItem(item)), salvageAmount);
+        Misc.dropItems(location, new ItemStack(Salvage.getSalvagedItem(item)), salvageableAmount);
 
         player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
         player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));

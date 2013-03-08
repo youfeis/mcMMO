@@ -89,9 +89,9 @@ public class Salvage {
         }
     }
 
-    protected static int calculateSalvageAmount(short currentDurability, short maxDurability, double percentage, int baseAmount) {
+    protected static int calculateSalvageableAmount(short currentDurability, short maxDurability, int baseAmount) {
         double percentDamaged = (double) (maxDurability - currentDurability) / maxDurability;
 
-        return Math.max((int) (Math.floor(baseAmount * percentDamaged) * percentage), 1);
+        return (int) Math.floor(baseAmount * percentDamaged);
     }
 }
