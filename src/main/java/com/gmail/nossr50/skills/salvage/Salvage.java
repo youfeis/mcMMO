@@ -9,6 +9,32 @@ import com.gmail.nossr50.util.ItemUtils;
 public class Salvage {
     public static int salvageAnvilId = Config.getInstance().getSalvageAnvilId();
 
+    public static int    salvageMaxBonusLevel = 1000;
+    public static double salvageMaxBonus      = 100.0D;
+
+    public static int advancedSalvageUnlockLevel = 350;
+
+    public static double extractEnchantChance1 = 10.0D;
+    public static double extractEnchantChance2 = 20.0D;
+    public static double extractEnchantChance3 = 30.0D;
+    public static double extractEnchantChance4 = 40.0D;
+    public static double extractEnchantChance5 = 50.0D;
+
+    public static double extractPartialEnchantChance1 = 75.0D;
+    public static double extractPartialEnchantChance2 = 60.0D;
+    public static double extractPartialEnchantChance3 = 45.0D;
+    public static double extractPartialEnchantChance4 = 30.0D;
+    public static double extractPartialEnchantChance5 = 15.0D;
+
+    public static int arcaneSalvageRank1 = 200;
+    public static int arcaneSalvageRank2 = 400;
+    public static int arcaneSalvageRank3 = 600;
+    public static int arcaneSalvageRank4 = 800;
+    public static int arcaneSalvageRank5 = 1000;
+
+    public static boolean arcaneSalvageDowngrades = true;
+    public static boolean arcaneSalvageEnchantLoss = true;
+
     protected static Material getSalvagedItem(ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
@@ -61,5 +87,11 @@ public class Salvage {
         else {
             return 0;
         }
+    }
+
+    protected static int calculateSalvageAmount(short currentDurability, short maxDurability, double percentage, int baseAmount) {
+        double percentDamaged = (double) (maxDurability - currentDurability) / maxDurability;
+
+        return Math.max((int) (Math.floor(baseAmount * percentDamaged) * percentage), 1);
     }
 }
