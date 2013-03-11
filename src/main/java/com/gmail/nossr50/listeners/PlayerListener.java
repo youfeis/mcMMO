@@ -291,7 +291,7 @@ public class PlayerListener implements Listener {
                     player.updateInventory();
                 }
                 /* SALVAGE CHECKS */
-                else if (blockID == Salvage.salvageAnvilId && Permissions.salvage(player) && Repair.isSalvageable(heldItem)) {
+                else if (blockID == Salvage.salvageAnvilId && Permissions.skillEnabled(player, SkillType.SALVAGE) && Salvage.isSalvageable(heldItem)) {
                     UserManager.getPlayer(player).getSalvageManager().handleSalvage(block.getLocation(), heldItem);
                     event.setCancelled(true);
                     player.updateInventory();

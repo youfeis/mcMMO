@@ -3,14 +3,11 @@ package com.gmail.nossr50.skills.repair;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -27,37 +24,6 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 public class RepairManager extends SkillManager {
     public RepairManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.REPAIR);
-    }
-
-    /**
-     * Handles notifications for placing an anvil.
-     *
-     * @param anvilID The item ID of the anvil block
-     */
-    public void placedAnvilCheck(int anvilId) {
-        Player player = getPlayer();
-
-        if (mcMMOPlayer.getPlacedAnvil(anvilId)) {
-            return;
-        }
-
-        if (mcMMO.spoutEnabled) {
-            SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-
-            if (spoutPlayer.isSpoutCraftEnabled()) {
-                String[] spoutMessages = Repair.getSpoutAnvilMessages(anvilId);
-                spoutPlayer.sendNotification(spoutMessages[0], spoutMessages[1], Material.getMaterial(anvilId));
-            }
-            else {
-                player.sendMessage(Repair.getAnvilMessage(anvilId));
-            }
-        }
-        else {
-            player.sendMessage(Repair.getAnvilMessage(anvilId));
-        }
-
-        player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        mcMMOPlayer.togglePlacedAnvil(anvilId);
     }
 
     public void handleRepair(ItemStack item) {

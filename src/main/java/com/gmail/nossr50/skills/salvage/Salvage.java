@@ -3,37 +3,76 @@ package com.gmail.nossr50.skills.salvage;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.ItemUtils;
 
 public class Salvage {
+    // The order of the values is extremely important, a few methods depend on it to work properly
+    protected enum Tier {
+        FIVE(5) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank5Level(); }
+            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank5(); }
+            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank5(); }},
+        FOUR(4) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank4Level(); }
+            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank4(); }
+            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank4(); }},
+        THREE(3) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank3Level(); }
+            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank3(); }
+            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank3(); }},
+        TWO(2) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank2Level(); }
+            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank2(); }
+            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank2(); }},
+        ONE(1) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank1Level(); }
+            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank1(); }
+            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank1(); }};
+
+        int numerical;
+
+        private Tier(int numerical) {
+            this.numerical = numerical;
+        }
+
+        public int toNumerical() {
+            return numerical;
+        }
+
+        abstract protected int getLevel();
+        abstract protected double getExtractFullEnchantChance();
+        abstract protected double getExtractPartialEnchantChance();
+    }
+
     public static int salvageAnvilId = Config.getInstance().getSalvageAnvilId();
 
-    public static int    salvageMaxBonusLevel = 1000;
-    public static double salvageMaxBonus      = 100.0D;
+    public static int    salvageMaxPercentageLevel = AdvancedConfig.getInstance().getSalvageMaxPercentageLevel();
+    public static double salvageMaxPercentage      = AdvancedConfig.getInstance().getSalvageMaxPercentage();
 
-    public static int advancedSalvageUnlockLevel = 350;
+    public static boolean arcaneSalvageDowngrades  = AdvancedConfig.getInstance().getArcaneSalvageEnchantDowngradeEnabled();
+    public static boolean arcaneSalvageEnchantLoss = AdvancedConfig.getInstance().getArcaneSalvageEnchantLossEnabled();
 
-    public static double extractFullEnchantChance1 = 2.5D;
-    public static double extractFullEnchantChance2 = 10.0D;
-    public static double extractFullEnchantChance3 = 17.5D;
-    public static double extractFullEnchantChance4 = 25.0D;
-    public static double extractFullEnchantChance5 = 32.5D;
+    public static int advancedSalvageUnlockLevel = AdvancedConfig.getInstance().getAdvancedSalvageUnlockLevel();
 
-    public static double extractPartialEnchantChance1 = 7.5D;
-    public static double extractPartialEnchantChance2 = 10.0D;
-    public static double extractPartialEnchantChance3 = 12.5D;
-    public static double extractPartialEnchantChance4 = 15.0D;
-    public static double extractPartialEnchantChance5 = 17.5D;
+    /**
+     * Checks if the item is salvageable.
+     *
+     * @param item Item to check
+     * @return true if the item is salvageable, false otherwise
+     */
+    public static boolean isSalvageable(ItemStack item) {
+        if (Config.getInstance().getSalvageTools() && (ItemUtils.isMinecraftTool(item) || ItemUtils.isStringTool(item) || item.getType() == Material.BUCKET)) {
+            return true;
+        }
 
-    public static int arcaneSalvageRank1 = 200;
-    public static int arcaneSalvageRank2 = 400;
-    public static int arcaneSalvageRank3 = 600;
-    public static int arcaneSalvageRank4 = 800;
-    public static int arcaneSalvageRank5 = 1000;
+        if (Config.getInstance().getSalvageArmor() && ItemUtils.isMinecraftArmor(item)) {
+            return true;
+        }
 
-    public static boolean arcaneSalvageDowngrades = true;
-    public static boolean arcaneSalvageEnchantLoss = true;
+        return false;
+    }
 
     protected static Material getSalvagedItem(ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {

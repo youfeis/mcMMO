@@ -466,6 +466,13 @@ permissions:
             mcmmo.ability.salvage.all: true
     mcmmo.ability.salvage.all:
         description: Allows access to all Smelting abilities
+        children:
+            mcmmo.ability.salvage.advancedsalvage: true
+            mcmmo.ability.salvage.arcanesalvage: true
+    mcmmo.ability.salvage.advancedsalvage:
+        description: Allows access to the Advanced Salvage ability
+    mcmmo.ability.salvage.arcanesalvage:
+        description: Allows access to the Arcane Salvage ability
     mcmmo.ability.smelting.*:
         default: false
         description: Allows access to all Smelting abilities

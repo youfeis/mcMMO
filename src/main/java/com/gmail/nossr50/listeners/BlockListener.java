@@ -115,7 +115,7 @@ public class BlockListener implements Listener {
         }
 
         if (Repair.anvilMessagesEnabled && (blockId == Repair.repairAnvilId || blockId == Salvage.salvageAnvilId)) {
-            UserManager.getPlayer(player).getRepairManager().placedAnvilCheck(blockId);
+            SkillUtils.placedAnvilCheck(player, blockId);
         }
     }
 

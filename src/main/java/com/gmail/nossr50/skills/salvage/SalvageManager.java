@@ -16,7 +16,9 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.salvage.Salvage.Tier;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 
 public class SalvageManager extends SkillManager {
     public SalvageManager(McMMOPlayer mcMMOPlayer) {
@@ -30,12 +32,11 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        if (getSkillLevel() < Salvage.advancedSalvageUnlockLevel && item.getDurability() != 0) {
+        if (item.getDurability() != 0 && (getSkillLevel() < Salvage.advancedSalvageUnlockLevel || !Permissions.advancedSalvage(player))) {
             player.sendMessage("You aren't skilled enough to salvage damaged items."); // TODO: Localize
             return;
         }
 
-        double salvagePercentage = Math.min((((Salvage.salvageMaxBonus / Salvage.salvageMaxBonusLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxBonus / 100.0D);
         int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), item.getType().getMaxDurability(), Salvage.getSalvagedAmount(item));
 
         if (salvageableAmount == 0) {
@@ -43,7 +44,8 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        salvageableAmount = Math.max((int) (salvageableAmount * salvagePercentage), 1);
+        double salvagePercentage = Math.min((((Salvage.salvageMaxPercentage / Salvage.salvageMaxPercentageLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxPercentage / 100.0D);
+        salvageableAmount = Math.max((int) (salvageableAmount * salvagePercentage), 1); // Always get at least something back, if you're capable of repairing it.
 
         player.setItemInHand(new ItemStack(Material.AIR));
         location.add(0, 1, 0);
@@ -64,10 +66,51 @@ public class SalvageManager extends SkillManager {
         player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
     }
 
+    /**
+     * Gets the Arcane Salvage rank
+     *
+     * @return the current Arcane Salvage rank
+     */
+    public int getArcaneSalvageRank() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.toNumerical();
+            }
+        }
+
+        return 0;
+    }
+
+    public double getExtractFullEnchantChance() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getExtractFullEnchantChance();
+            }
+        }
+
+        return 0;
+    }
+
+    public double getExtractPartialEnchantChance() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getExtractPartialEnchantChance();
+            }
+        }
+
+        return 0;
+    }
+
     private ItemStack arcaneSalvageCheck(Map<Enchantment, Integer> enchants) {
         Player player = getPlayer();
 
-        if (getSkillLevel() < Salvage.arcaneSalvageRank1) { // TODO: Permissions
+        if (getArcaneSalvageRank() == 0 || !Permissions.arcaneSalvage(player)) {
             player.sendMessage("You were unable to extract the knowledge contained within this item."); // TODO: Localize
             return null;
         }
@@ -80,10 +123,10 @@ public class SalvageManager extends SkillManager {
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             int successChance = Misc.getRandom().nextInt(activationChance);
 
-            if (Salvage.extractFullEnchantChance1 > successChance) {
+            if (!Salvage.arcaneSalvageEnchantLoss || getExtractFullEnchantChance() > successChance) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
             }
-            else if (Salvage.extractPartialEnchantChance1 > successChance) {
+            else if (enchant.getValue() > 1 && Salvage.arcaneSalvageDowngrades && getExtractPartialEnchantChance() > successChance) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue() - 1, true);
                 downgraded = true;
             }
