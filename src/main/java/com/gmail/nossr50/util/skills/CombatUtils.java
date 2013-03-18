@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
@@ -585,5 +586,49 @@ public final class CombatUtils {
         }
 
         return process;
+    }
+
+    public static String createHealthDisplay(LivingEntity entity) {
+        int maxHealth = entity.getMaxHealth();
+        int currentHealth = entity.getHealth();
+        double healthPercentage = (currentHealth / (double) maxHealth) * 100.0D;
+
+        int coloredDisplayBars = (int) (20 * healthPercentage);
+        int grayDisplayBars = 20 - coloredDisplayBars;
+
+        ChatColor color = ChatColor.BLACK;
+
+        if (healthPercentage >= 85) {
+            color = ChatColor.DARK_GREEN;
+        }
+        else if (healthPercentage >= 70) {
+            color = ChatColor.GREEN;
+        }
+        else if (healthPercentage >= 55) {
+            color = ChatColor.GOLD;
+        }
+        else if (healthPercentage >= 40) {
+            color = ChatColor.YELLOW;
+        }
+        else if (healthPercentage >= 25) {
+            color = ChatColor.RED;
+        }
+        else if (healthPercentage >= 0) {
+            color = ChatColor.DARK_RED;
+        }
+
+        String healthbar = color + "";
+
+        for (int i = 0; i < coloredDisplayBars; i++) {
+            healthbar += "|";
+        }
+
+        healthbar += ChatColor.GRAY;
+
+        for (int i = 0; i < grayDisplayBars; i++) {
+            healthbar += "|";
+        }
+
+        return healthbar;
     }
 }
