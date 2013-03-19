@@ -27,6 +27,7 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.runnables.HealthDisplayUpdaterTask;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -288,6 +289,7 @@ public final class CombatUtils {
 
         target.setCustomNameVisible(true);
         target.setCustomName(createHealthDisplay(target, event.getDamage()));
+        mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new HealthDisplayUpdaterTask(target), 3 * 20);
     }
 
     /**
@@ -596,40 +598,19 @@ public final class CombatUtils {
         int currentHealth = Math.max(entity.getHealth() - damage, 0);
         double healthPercentage = (currentHealth / (double) maxHealth) * 100.0D;
 
-        int coloredDisplayBars = (int) (10 * (healthPercentage / 100.0D));
-        int grayDisplayBars = 10 - coloredDisplayBars;
+        int redHearts = (int) (10 * (healthPercentage / 100.0D));
+        int grayHearts = 10 - redHearts;
 
-        ChatColor color = ChatColor.BLACK;
+        String healthbar = ChatColor.DARK_RED + "";
 
-        if (healthPercentage >= 85) {
-            color = ChatColor.DARK_GREEN;
-        }
-        else if (healthPercentage >= 70) {
-            color = ChatColor.GREEN;
-        }
-        else if (healthPercentage >= 55) {
-            color = ChatColor.GOLD;
-        }
-        else if (healthPercentage >= 40) {
-            color = ChatColor.YELLOW;
-        }
-        else if (healthPercentage >= 25) {
-            color = ChatColor.RED;
-        }
-        else if (healthPercentage >= 0) {
-            color = ChatColor.DARK_RED;
-        }
-
-        String healthbar = color + "";
-
-        for (int i = 0; i < coloredDisplayBars; i++) {
-            healthbar += "█";
+        for (int i = 0; i < redHearts; i++) {
+            healthbar += "❤";
         }
 
         healthbar += ChatColor.GRAY;
 
-        for (int i = 0; i < grayDisplayBars; i++) {
-            healthbar += "█";
+        for (int i = 0; i < grayHearts; i++) {
+            healthbar += "❤";
         }
 
         return healthbar;
