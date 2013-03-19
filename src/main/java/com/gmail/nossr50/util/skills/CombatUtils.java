@@ -593,7 +593,7 @@ public final class CombatUtils {
         int currentHealth = entity.getHealth();
         double healthPercentage = (currentHealth / (double) maxHealth) * 100.0D;
 
-        int coloredDisplayBars = (int) (20 * healthPercentage);
+        int coloredDisplayBars = (int) (20 * (healthPercentage / 100.0D));
         int grayDisplayBars = 20 - coloredDisplayBars;
 
         ChatColor color = ChatColor.BLACK;
@@ -623,10 +623,8 @@ public final class CombatUtils {
             healthbar += "|";
         }
 
-        healthbar += ChatColor.GRAY;
-
         for (int i = 0; i < grayDisplayBars; i++) {
-            healthbar += "|";
+            healthbar += ChatColor.GRAY + "|";
         }
 
         return healthbar;
