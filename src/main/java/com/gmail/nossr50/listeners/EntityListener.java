@@ -126,10 +126,7 @@ public class EntityListener implements Listener {
             }
         }
 
-        target.setCustomNameVisible(true);
-        target.setCustomName(CombatUtils.createHealthDisplay(target));
         CombatUtils.combatChecks(event, attacker, target);
-        target.setCustomName(CombatUtils.createHealthDisplay(target));
     }
 
     /**

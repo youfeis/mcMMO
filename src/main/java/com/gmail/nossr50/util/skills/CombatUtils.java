@@ -285,6 +285,9 @@ public final class CombatUtils {
                 }
             }
         }
+
+        target.setCustomNameVisible(true);
+        target.setCustomName(createHealthDisplay(target, event.getDamage()));
     }
 
     /**
@@ -588,13 +591,13 @@ public final class CombatUtils {
         return process;
     }
 
-    public static String createHealthDisplay(LivingEntity entity) {
+    private static String createHealthDisplay(LivingEntity entity, int damage) {
         int maxHealth = entity.getMaxHealth();
-        int currentHealth = entity.getHealth();
+        int currentHealth = Math.max(entity.getHealth() - damage, 0);
         double healthPercentage = (currentHealth / (double) maxHealth) * 100.0D;
 
-        int coloredDisplayBars = (int) (20 * (healthPercentage / 100.0D));
-        int grayDisplayBars = 20 - coloredDisplayBars;
+        int coloredDisplayBars = (int) (10 * (healthPercentage / 100.0D));
+        int grayDisplayBars = 10 - coloredDisplayBars;
 
         ChatColor color = ChatColor.BLACK;
 
@@ -620,11 +623,13 @@ public final class CombatUtils {
         String healthbar = color + "";
 
         for (int i = 0; i < coloredDisplayBars; i++) {
-            healthbar += "|";
+            healthbar += "█";
         }
 
+        healthbar += ChatColor.GRAY;
+
         for (int i = 0; i < grayDisplayBars; i++) {
-            healthbar += ChatColor.GRAY + "|";
+            healthbar += "█";
         }
 
         return healthbar;
