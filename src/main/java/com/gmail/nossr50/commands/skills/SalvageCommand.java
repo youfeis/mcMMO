@@ -1,12 +1,14 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.util.Permissions;
 
 public class SalvageCommand extends SkillCommand {
+    private boolean canAdvancedSalvage;
+    private boolean canArcaneSalvage;
 
     public SalvageCommand() {
         super(SkillType.SALVAGE);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -17,14 +19,13 @@ public class SalvageCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        // TODO Auto-generated method stub
-
+        canAdvancedSalvage = Permissions.advancedSalvage(player);
+        canArcaneSalvage = Permissions.arcaneSalvage(player);
     }
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        // TODO Auto-generated method stub
-        return false;
+        return canAdvancedSalvage || canArcaneSalvage;
     }
 
     @Override
@@ -35,8 +36,7 @@ public class SalvageCommand extends SkillCommand {
 
     @Override
     protected boolean statsHeaderPermissions() {
-        // TODO Auto-generated method stub
-        return false;
+        return canAdvancedSalvage || canArcaneSalvage;
     }
 
     @Override
@@ -44,5 +44,4 @@ public class SalvageCommand extends SkillCommand {
         // TODO Auto-generated method stub
 
     }
-
 }
