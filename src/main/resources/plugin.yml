@@ -1176,7 +1176,8 @@ permissions:
         children:
             mcmmo.chat.partychat: true
             mcmmo.commands.defaults: true
-            mcmmo.motd: true 
+            mcmmo.mobhealthdisplay: true
+            mcmmo.motd: true
             mcmmo.skills.all: true
     mcmmo.defaultsop:
         default: op
@@ -1197,6 +1198,8 @@ permissions:
             mcmmo.item.chimaerawing: true
     mcmmo.item.chimaerawing:
         description: Allows use of Chimaera Wing item
+    mcmmo.mobhealthdisplay:
+        description: Allows viewing of mob health display during combat
     mcmmo.motd:
         description: Allows access to the motd
     mcmmo.party.*:

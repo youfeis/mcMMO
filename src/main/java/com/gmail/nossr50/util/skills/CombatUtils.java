@@ -287,11 +287,13 @@ public final class CombatUtils {
             }
         }
 
-        String oldName = target.getCustomName();
+        if (attacker instanceof Player && Permissions.mobHealthDisplay((Player) attacker)) {
+            String oldName = target.getCustomName();
 
-        target.setCustomNameVisible(true);
-        target.setCustomName(createHealthDisplay(target, event.getDamage()));
-        new HealthDisplayUpdaterTask(target, oldName).runTaskLater(mcMMO.p, 3 * 20); // Clear health display after 3 seconds
+            target.setCustomNameVisible(true);
+            target.setCustomName(createHealthDisplay(target, event.getDamage()));
+            new HealthDisplayUpdaterTask(target, oldName).runTaskLater(mcMMO.p, 3 * 20); // Clear health display after 3 seconds
+        }
     }
 
     /**
