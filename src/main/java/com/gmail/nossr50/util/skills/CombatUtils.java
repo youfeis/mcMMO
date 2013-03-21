@@ -287,9 +287,11 @@ public final class CombatUtils {
             }
         }
 
+        String oldName = target.getCustomName();
+
         target.setCustomNameVisible(true);
         target.setCustomName(createHealthDisplay(target, event.getDamage()));
-        mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new HealthDisplayUpdaterTask(target), 3 * 20);
+        new HealthDisplayUpdaterTask(target, oldName).runTaskLater(mcMMO.p, 3 * 20); // Clear health display after 3 seconds
     }
 
     /**
